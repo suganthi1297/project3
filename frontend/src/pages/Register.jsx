@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { saveUser } from "../api"; // ✅ correct import
+import { useNavigate } from "react-router-dom";
+import "./Register.css"; // 🔥 import css
 
 function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -18,62 +21,70 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // validation
     if (!form.username || !form.email || !form.password) {
-      alert("All fields required");
+      alert("All fields required ❌");
       return;
     }
 
-    // duplicate check
     const users = JSON.parse(localStorage.getItem("users")) || [];
-    const exists = users.find((u) => u.email === form.email);
 
+    const exists = users.find((u) => u.email === form.email);
     if (exists) {
-alert("Email already exists ❌");
+      alert("Email already exists ❌");
       return;
     }
 
-    // save user
-    saveUser(form);
+    users.push(form);
+    localStorage.setItem("users", JSON.stringify(users));
 
     alert("Registered successfully ✅");
 
-    // clear form
     setForm({
       username: "",
       email: "",
       password: "",
     });
+
+    navigate("/login");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
+    <div className="register-container">
+      <div className="register-card">
+        <h2 className="register-title">Create Account</h2>
 
-      <input
-        name="username"
-        placeholder="Username"
-        value={form.username}
-        onChange={handleChange}
-      />
+        <form onSubmit={handleSubmit}>
+          <input
+            className="register-input"
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+          />
 
-      <input
-        name="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={handleChange}
-      />
+          <input
+            className="register-input"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={handleChange}
-      />
+          <input
+            type="password"
+            className="register-input"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+          />
 
-      <button type="submit">Register</button>
-    </form>
+          <button className="register-btn">
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
