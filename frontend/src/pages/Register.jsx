@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../api";   // 🔥 connect api.jsx
+import { saveUser } from "../api"; // ✅ correct import
 
 function Register() {
   const [form, setForm] = useState({
@@ -15,15 +15,35 @@ function Register() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      await API.post("register/", form);
-      alert("Registered successfully ✅");
-    } catch (error) {
-      alert("Error ❌");
+    // validation
+    if (!form.username || !form.email || !form.password) {
+      alert("All fields required");
+      return;
     }
+
+    // duplicate check
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const exists = users.find((u) => u.email === form.email);
+
+    if (exists) {
+alert("Email already exists ❌");
+      return;
+    }
+
+    // save user
+    saveUser(form);
+
+    alert("Registered successfully ✅");
+
+    // clear form
+    setForm({
+      username: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -33,18 +53,22 @@ function Register() {
       <input
         name="username"
         placeholder="Username"
+        value={form.username}
         onChange={handleChange}
       />
 
       <input
         name="email"
         placeholder="Email"
+        value={form.email}
         onChange={handleChange}
       />
 
       <input
+        type="password"
         name="password"
         placeholder="Password"
+        value={form.password}
         onChange={handleChange}
       />
 

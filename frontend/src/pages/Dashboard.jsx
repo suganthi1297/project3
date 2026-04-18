@@ -1,28 +1,21 @@
-import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const [user, setUser] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUser(decoded.username);
-    }
-  }, []);
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
+  const handleLogout = () => {
+    localStorage.removeItem("isAuth");
+    navigate("/login");
   };
 
   return (
-    <>
-      <h1>Welcome {user} 🔥</h1>
-      <button onClick={logout}>Logout</button>
-    </>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Welcome to Dashboard 🎉</h2>
+
+      <button onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
   );
 }
 
