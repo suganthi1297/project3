@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Register.css"; // 🔥 import css
 
 function Register() {
   const navigate = useNavigate();
@@ -49,13 +48,13 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <h2 className="register-title">Create Account</h2>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Create Account</h2>
 
         <form onSubmit={handleSubmit}>
           <input
-            className="register-input"
+            style={styles.input}
             name="username"
             placeholder="Username"
             value={form.username}
@@ -63,7 +62,7 @@ function Register() {
           />
 
           <input
-            className="register-input"
+            style={styles.input}
             name="email"
             placeholder="Email"
             value={form.email}
@@ -72,14 +71,14 @@ function Register() {
 
           <input
             type="password"
-            className="register-input"
+            style={styles.input}
             name="password"
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
           />
 
-          <button className="register-btn">
+          <button style={styles.button}>
             Register
           </button>
         </form>
@@ -89,3 +88,42 @@ function Register() {
 }
 
 export default Register;
+
+// 🔥 INLINE STYLES
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #667eea, #764ba2)",
+  },
+  card: {
+    background: "#fff",
+    padding: "30px",
+    borderRadius: "12px",
+    width: "320px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    outline: "none",
+  },
+  button: {
+    width: "100%",
+    padding: "10px",
+    background: "#667eea",
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+};
